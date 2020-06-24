@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+      <OutputType>Exe</OutputType>
+      <TargetExt>.exe</TargetExt>
+    <TargetFramework>netstandard2.0<!--netcoreapp3.1--></TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Speech">
+        <HintPath>C:\Windows\Microsoft.NET\Framework64\v4.0.30319\WPF\System.Speech.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
