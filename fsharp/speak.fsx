@@ -15,10 +15,10 @@ let MediaPlayer = Type.GetType @"
     Windows.Media.Playback.MediaPlayer,
     Windows.Foundation.UniversalApiContract,
     ContentType=WindowsRuntime"
-let TypedEventHandler = Type.GetType(@"
+let TypedEventHandler(a, b) = Type.GetType(@"
     Windows.Foundation.TypedEventHandler`2,
     Windows.Foundation.FoundationContract,
-    ContentType=WindowsRuntime").MakeGenericType(MediaPlayer, typeof<obj>)
+    ContentType=WindowsRuntime").MakeGenericType(a, b)
 
 let AsTaskGeneric = query {
     for m in typeof<WindowsRuntimeSystemExtensions>.GetMethods() do
@@ -51,7 +51,7 @@ let player = Activator.CreateInstance(MediaPlayer)
 MediaPlayer.GetMethod("SetStreamSource").Invoke(player, [|stream|])
 let tcs = TaskCompletionSource<unit>()
 type C = static member f(_: obj, _: obj) = tcs.SetResult()
-let d = Delegate.CreateDelegate(TypedEventHandler, typeof<C>.GetMethod("f"))
+let d = Delegate.CreateDelegate(TypedEventHandler(MediaPlayer, typeof<obj>), typeof<C>.GetMethod("f"))
 MediaPlayer.GetEvent("MediaEnded").AddMethod.Invoke(player, [|d|])
 MediaPlayer.GetMethod("Play").Invoke(player, [||])
 tcs.Task.Result
